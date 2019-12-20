@@ -17,5 +17,13 @@ RSpec.describe Project do
       # Assert; Then
       expect(project.done?).to be_falsy
     end
+
+    it "marks a project done if its tasks are done" do
+      # Act; When
+      project.tasks << task
+      task.mark_completed
+      # Assert; Then
+      expect(project).to be_done
+    end
   end
 end
