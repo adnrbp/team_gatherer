@@ -27,10 +27,12 @@ RSpec.describe Project do
     end
   end
   describe "estimates" do
+    # Arrange; Given
     let(:project) {Project.new}
     let(:done) {Task.new(size: 2, completed: true)}
     let(:small_not_done) {Task.new(size:1)}
     let(:large_not_done) { Task.new(size: 4) }
+    # Act; When
     before(:example) do
       project.tasks = [done, small_not_done, large_not_done]
     end
@@ -40,4 +42,5 @@ RSpec.describe Project do
     it "can calculate remaining size" do
       expect(project.remaining_size).to eq(5)
     end
+  end
 end
