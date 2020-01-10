@@ -13,54 +13,54 @@ end
 
 
 describe "task string parsing" do
-  it "handles an empty string" do
+  # Arrange
+  let(:creator) { CreatesProject.new(name: "Test", task_string: task_string) }
+  let(:tasks) { creator.convert_string_to_tasks }
+
+  describe "with an empty string" do
     # Arrange
-    creator = CreatesProject.new(name: "Test", task_string: "")
-    tasks = creator.convert_string_to_tasks
+    let(:task_string) { "" }
     # Assert
-    expect(tasks.size).to eq(0)
+    specify { expect(tasks.size).to eq(0) }
   end
 
-  it "handles a single string" do
+  describe "with a single string" do
     # Arrange
-    creator = CreatesProject.new(name: "Test", task_string: "Start things")
-    tasks = creator.convert_string_to_tasks
+    let(:task_string) { "Start things" }
     # Assert
-    expect(tasks.size).to eq(1)
-    expect(tasks.map(&:title)).to eq(["Start things"])
-    expect(tasks.map(&:size)).to eq([1])
+    specify { expect(tasks.size).to eq(1) }
+    specify { expect(tasks.map(&:title)).to eq(["Start things"]) }
+    specify { expect(tasks.map(&:size)).to eq([1]) }
   end
 
-  it "handles a single string with size" do
+  describe "with a single string with size" do
     # Arrange
-    creator = CreatesProject.new(name: "Test", task_string: "Start things:3")
-    tasks = creator.convert_string_to_tasks
+    let(:task_string) { "Start things:3" }
     # Assert
-    expect(tasks.size).to eq(1)
-    expect(tasks.map(&:title)).to eq(["Start things"])
-    expect(tasks.map(&:size)).to eq([3])
+    specify { expect(tasks.size).to eq(1) }
+    specify { expect(tasks.map(&:title)).to eq(["Start things"]) }
+    specify { expect(tasks.map(&:size)).to eq([3]) }
   end
 
-  it "handles multiple tasks" do
+  describe "with multiple tasks" do
     # Arrange
-    creator = CreatesProject.new(name: "Test",
-                  task_string: "Start things:3\nEnd things:2")
-    tasks = creator.convert_string_to_tasks
+    let(:task_string) { "Start things:3\nEnd things:2" }
     # Assert
-    expect(tasks.size).to eq(2)
-    expect(tasks.map(&:title)).to eq(["Start things", "End things"])
-    expect(tasks.map(&:size)).to eq([3, 2])
+    specify { expect(tasks.size).to eq(2) }
+    specify { expect(tasks.map(&:title)).to eq(["Start things", "End things"]) }
+    specify { expect(tasks.map(&:size)).to eq([3, 2]) }
   end
 
-  it "attaches tasks to the project" do
+  describe "attaching tasks to the project" do
     # Arrange
-    creator = CreatesProject.new(name: "Test",
-                  task_string: "Start things:3\nEnd things:2")
-    # Act
-    creator.create
-    # Assert
-    expect(creator.project.tasks.size).to eq(2)
-    expect(creator.project).not_to be_a_new_record
+    let(:task_string) { "Start things:3\nEnd things:2" }
+    it "saves the project and tasks" do
+      # Act
+      creator.create
+      # Assert
+      expect(creator.project.tasks.size).to eq(2)
+      expect(creator.project).not_to be_a_new_record
+    end
   end
 
 end
