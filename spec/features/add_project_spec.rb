@@ -8,9 +8,14 @@ describe "adding projects" do
     
     click_on("Create Project")
     visit projects_path
+
+    @project = Project.find_by_name("PRoject Runway")
     
-    expect(page).to have_content("Project Runway")
-    expect(page).to have_content("8")
+    expect(page).to have_selector(
+      "#project_#{@project.id} .name", text: "Project Runway")
+    expect(page).to have_selector(
+      "#project_#{@project.id} .total-size", text: "8")
+
 
   end
 end
